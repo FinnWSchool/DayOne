@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayOne Library</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#111;
+    font-family:'Josefin Sans', sans-serif;
+}
+
+.phone-frame{
+    width:390px;
+    height:844px;
+    border-radius:30px;
+    padding:30px 25px;
+    position:relative;
+    overflow:hidden;
+    background-image: linear-gradient(rgba(1,1,1,0.836), rgba(0,0,0,0.676)), url('bg.jpg');
+    background-position:center;
+    background-size:170%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    border:1px solid white;
+}
+
+h1{
+    color:white;
+    font-size:50px;
+    margin-top:10px;
+    font-family:"Anton", sans-serif;
+    text-align:center;
+    font-style:italic;
+}
+
+.add-btn{
+    position:absolute;
+    top:30px;
+    right:30px;
+    font-size:25px;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.add-btn:hover{
+    transform:scale(1.1);
+}
+
+.popup{
+    display:none;
+    position:absolute;
+    top:100px;
+    width:300px;
+    padding:20px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    color:white;
+    z-index:100;
+}
+
+.popup input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:10px;
+}
+
+.popup button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:'Josefin Sans', sans-serif;
+}
+
+/* Form / playlist container */
+form{
+    width:100%;
+    max-width:350px;
+    padding:15px;
+    border-radius:18px;
+    backdrop-filter:blur(10px);
+    font-family:'Josefin Sans', sans-serif;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.15);
+    margin-top:60px;
+    max-height:620px;
+    overflow-y:auto;
+}
+
+/* Song row */
+.song-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px;
+    border-radius:12px;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.song-row:hover{
+    background:rgba(255,255,255,0.08);
+}
+
+/* Active/playing row glows green */
+.song-row.playing{
+    background:rgba(30,215,96,0.15);
+    border:1px solid rgba(30,215,96,0.4);
+}
+
+/* Thumbnail */
+.song-thumb{
+    width:50px;
+    height:50px;
+    border-radius:8px;
+    object-fit:cover;
+    flex-shrink:0;
+    background:#333;
+}
+
+/* Play button */
+.play-btn{
+    width:50px;
+    height:50px;
+    border-radius:8px;
+    background:#222;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.3s;
+}
+
+.play-btn:hover{
+    background:#333;
+}
+
+/* Green play button when active */
+.song-row.playing .play-btn{
+    background:#1ed760;
+    color:black;
+}
+
+/* Song info */
+.song-info{
+    flex:1;
+    overflow:hidden;
+}
+
+.song-title{
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.song-artist{
+    color:#aaa;
+    font-size:12px;
+    margin-top:3px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* Playing label */
+.song-row.playing .song-title{
+    color:#1ed760;
+}
+
+/* Audio player */
+#audioPlayer{
+    width:85%;
+    position:absolute;
+    bottom:120px;
+}
+
+/* Bottom nav */
+.bottom-nav{
+    width:90%;
+    max-width:320px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:15px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    position:absolute;
+    bottom:30px;
+}
+
+.bottom-nav a{
+    text-decoration:none;
+    color:gray;
+    font-size:28px;
+    transition:0.3s;
+}
+
+.bottom-nav a.active{
+    color:white;
+    animation:glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 5px white; }
+    to{ text-shadow:0 0 15px white; }
+}
+
+.bottom-nav a:hover{
+    color:#d5d5d5;
+    transform:scale(1.3);
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+
+    <!-- Plus Button -->
+    <div class="add-btn" onclick="togglePopup()">
+        <i class="fa-solid fa-plus"></i>
+    </div>
+
+    <!-- Upload Popup -->
+    <div class="popup" id="popupBox">
+        <label style="color:white;">Upload MP3 File</label>
+        <input type="file" id="mp3Upload" accept=".mp3,audio/mpeg">
+        <button onclick="uploadSong()">Add Song</button>
+    </div>
+
+    <h1>Library</h1>
+
+    <!-- Playlist Form -->
+    <form>
+        <div id="playlist"></div>
+    </form>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer"></audio>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html"><i class="fa-solid fa-house"></i></a>
+        <a href="library.html" class="active"><i class="fa-solid fa-music"></i></a>
+        <a href="profile.html"><i class="fa-solid fa-user"></i></a>
+    </nav>
+
+</div>
+
+<script>
+
+let playlist = [];
+let currentIndex = -1;
+const audio = document.getElementById("audioPlayer");
+
+function togglePopup(){
+    const popup = document.getElementById("popupBox");
+    popup.style.display = popup.style.display === "block" ? "none" : "block";
+}
+
+function uploadSong(){
+    const fileInput = document.getElementById("mp3Upload");
+    const file = fileInput.files[0];
+
+    if(!file){
+        alert("Please select an MP3 file first.");
+        return;
+    }
+
+    playlist.push({
+        name: file.name.replace(".mp3",""),
+        artist: "Unknown Artist",
+        url: URL.createObjectURL(file),
+        thumb: null
+    });
+
+    renderPlaylist();
+    fileInput.value = "";
+    document.getElementById("popupBox").style.display = "none";
+}
+
+function renderPlaylist(){
+    const playlistDiv = document.getElementById("playlist");
+    playlistDiv.innerHTML = "";
+
+    playlist.forEach((song, index) => {
+        const row = document.createElement("div");
+        row.className = "song-row" + (index === currentIndex ? " playing" : "");
+        row.id = "song-row-" + index;
+
+        const isPlaying = index === currentIndex && !audio.paused;
+
+        row.innerHTML = `
+            <button class="play-btn" onclick="togglePlay(${index})">
+                <i class="fa-solid ${isPlaying ? "fa-pause" : "fa-play"}"></i>
+            </button>
+            <div class="song-info">
+                <div class="song-title">${song.name}</div>
+                <div class="song-artist">${song.artist}</div>
+            </div>
+        `;
+
+        playlistDiv.appendChild(row);
+    });
+}
+
+function togglePlay(index){
+    if(currentIndex === index){
+        // Same song — toggle pause/play
+        if(audio.paused){
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    } else {
+        // New song
+        currentIndex = index;
+        audio.src = playlist[index].url;
+        audio.play();
+    }
+    renderPlaylist();
+}
+
+// Re-render on pause/play to sync icon
+audio.addEventListener("play", renderPlaylist);
+audio.addEventListener("pause", renderPlaylist);
+audio.addEventListener("ended", () => {
+    // Auto-play next
+    if(currentIndex < playlist.length - 1){
+        togglePlay(currentIndex + 1);
+    } else {
+        currentIndex = -1;
+        renderPlaylist();
+    }
+});
+
+</script>
+
+</body>
+</html>

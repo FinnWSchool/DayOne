@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayOne Library</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#111;
+    font-family:'Josefin Sans', sans-serif;
+}
+
+/* Phone frame */
+.phone-frame{
+    width:390px;
+    height:844px;
+    border-radius:30px;
+    padding:30px 25px;
+    position:relative;
+
+    background-image:
+    linear-gradient(rgba(1,1,1,0.836), rgba(0,0,0,0.676)),
+    url('bg.jpg');
+
+    background-position:center;
+    background-size:170%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    border:1px solid white;
+}
+
+/* Title */
+h1{
+    color:white;
+    font-size:50px;
+    margin-top:10px;
+    font-family:"Anton", sans-serif;
+    text-align:center;
+    font-style:italic;
+}
+
+/* Music box */
+.music-box{
+    margin-top:40px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+.music-box input{
+    width:300px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+}
+
+.music-box button{
+    width:150px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:'Josefin Sans', sans-serif;
+}
+
+/* Player */
+#player-container{
+    margin-top:10px;
+}
+
+/* Bottom nav */
+.bottom-nav{
+    width:90%;
+    max-width:320px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:15px;
+
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+
+    position:absolute;
+    bottom:30px;
+}
+
+.bottom-nav a{
+    text-decoration:none;
+    color:gray;
+    font-size:28px;
+    transition:0.3s;
+}
+
+/* Active tab */
+.bottom-nav a.active{
+    color:white;
+    animation:glow 1s ease-in-out infinite alternate;
+}
+
+/* Glow */
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px white;
+    }
+    to{
+        text-shadow:0 0 15px white;
+    }
+}
+
+/* Hover */
+.bottom-nav a:hover{
+    color:#d5d5d5;
+    transform:scale(1.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+
+    <h1>Library</h1>
+
+    <!-- YouTube input -->
+    <div class="music-box">
+
+        <input type="text" id="youtubeLink" placeholder="Paste YouTube link here">
+
+        <button onclick="loadVideo()">Play</button>
+
+        <div id="player-container">
+            <iframe 
+                id="youtubePlayer"
+                width="300"
+                height="200"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <a href="home.html">
+            <i class="fa-solid fa-house"></i>
+        </a>
+
+        <a href="library.html" class="active">
+            <i class="fa-solid fa-book"></i>
+        </a>
+
+        <a href="profile.html">
+            <i class="fa-solid fa-user"></i>
+        </a>
+    </nav>
+
+</div>
+
+<script>
+function loadVideo() {
+    let url = document.getElementById("youtubeLink").value.trim();
+    let videoId = "";
+
+    // Extract ID safely
+    try {
+        if (url.includes("youtube.com/watch?v=")) {
+            videoId = new URL(url).searchParams.get("v");
+        } 
+        else if (url.includes("youtu.be/")) {
+            videoId = url.split("youtu.be/")[1].split("?")[0];
+        }
+    } catch (e) {
+        alert("Invalid link format");
+        return;
+    }
+
+    if (videoId) {
+        document.getElementById("youtubePlayer").src =
+            `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    } else {
+        alert("Could not extract video ID");
+    }
+}
+</script>
+</script>
+
+</body>
+</html>

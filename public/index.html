@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayOne Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles2.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#111;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+
+.phone-frame{
+    width:390px;
+    height:844px;
+    border-radius:30px;
+    padding:30px 25px;
+    background-image: linear-gradient(rgba(1, 1, 1, 0.836), rgba(0, 0, 0, 0.676)), url('bg.jpg');
+    background-position: center;
+    background-size: 170%;
+    
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;  
+    align-items:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    border:1px solid #ffffff;
+}
+
+
+h1{
+    color:white;
+    font-size:75px;
+    margin-top:65px;
+    font-family: "Anton", sans-serif;
+    font-style: italic;
+    text-align: center;
+}
+
+
+
+
+button{
+    width:350px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:white;
+    color:#ffffff;
+    cursor:pointer;
+    margin-top:400px;
+    font-family:'Anton', sans-serif;
+    transition-duration: 0.4s;
+    font-style: italic;
+    font-size: 20px;
+    background:rgba(0, 0, 0, 0);
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.bottom-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+h2{
+    color:white;
+    font-size:20px;
+    margin-top:15px;
+    text-align:center;
+    font-family:'Josefin Sans', sans-serif;
+    font-style:italic;
+}
+.button:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+    background-color: #292929;
+    color: white;
+}
+
+
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+
+    <div class="top-content">
+        <h1>DayOne</h1>
+    </div>
+
+    <div class="bottom-content">
+        <form>
+        <button class="button" type="button" onclick="window.location.href='login.html'">
+    Start
+</button>
+
+        <h2>Combining audio with progress</h2>
+    </div>
+</form>
+</div>
+
+</body>
+</html>

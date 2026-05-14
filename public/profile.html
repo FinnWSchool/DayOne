@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayOne Library</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#111;
+    font-family:'Josefin Sans', sans-serif;
+}
+
+.phone-frame{
+    width:390px;
+    height:844px;
+    border-radius:30px;
+    padding:30px 25px;
+    position:relative;
+
+    background-image:
+    linear-gradient(rgba(1,1,1,0.836), rgba(0,0,0,0.676)),
+    url('bg.jpg');
+
+    background-position:center;
+    background-size:170%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+    border:1px solid white;
+}
+
+h1{
+    color:white;
+    font-size:50px;
+    margin-top:10px;
+    font-family:"Anton", sans-serif;
+    text-align:center;
+    font-style:italic;
+}
+
+/* Bottom nav */
+.bottom-nav{
+    width:90%;
+    max-width:320px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:15px;
+
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+
+    position:absolute;
+    bottom:30px;
+}
+
+.bottom-nav a{
+    text-decoration:none;
+    color:gray;
+    font-size:28px;
+    transition:0.3s;
+}
+
+/* Active icon */
+.bottom-nav a.active{
+    color:white;
+    animation:glow 1s ease-in-out infinite alternate;
+}
+
+/* Glow animation */
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px white;
+    }
+    to{
+        text-shadow:0 0 15px white;
+    }
+}
+
+/* Hover */
+.bottom-nav a:hover{
+    color:#d5d5d5;
+    transform:scale(1.1);
+}
+</style>
+
+<body>
+
+<div class="phone-frame">
+
+    <h1>Profile</h1>
+
+    <nav class="bottom-nav">
+        <a href="home.html">
+            <i class="fa-solid fa-house"></i>
+        </a>
+
+        <a href="library.html">
+            <i class="fa-solid fa-music"></i>
+        </a>
+
+        <a href="profile.html" class="active">
+            <i class="fa-solid fa-user"></i>
+        </a>
+    </nav>
+
+</div>
+
+</body>
+</html>
