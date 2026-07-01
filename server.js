@@ -1,10 +1,14 @@
+// I’m loading the tools I need to build my server
+
 const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
 
+// This is my server application (creating server)
 const app = express();
+// Set up rules so frontend and files work properly
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
@@ -15,7 +19,7 @@ mongoose.connect("mongodb+srv://finnworth:stopmakingmedothis@dayone.noh9ita.mong
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
-// Song model
+// This is the format of stored songs
 const SongSchema = new mongoose.Schema({
     name: String,
     artist: String,
@@ -40,7 +44,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Upload a song
+// This is the uploading song API that I created 
 app.post("/api/songs", upload.fields([
     { name: "song", maxCount: 1 },
     { name: "image", maxCount: 1 }
@@ -59,13 +63,13 @@ app.post("/api/songs", upload.fields([
     }
 });
 
-// Get all songs
+// Gets all the songs
 app.get("/api/songs", async (req, res) => {
     const songs = await Song.find().sort({ createdAt: -1 });
     res.json(songs);
 });
 
-// Delete a song
+// User can delete a song
 app.delete("/api/songs/:id", async (req, res) => {
     await Song.findByIdAndDelete(req.params.id);
     res.json({ message: "Song deleted" });
