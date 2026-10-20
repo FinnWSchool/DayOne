@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,16 +56,30 @@ h1{
 
 .add-btn{
     position:absolute;
-    top:30px;
-    right:30px;
-    font-size:25px;
+    top:20px;
+    right:20px;
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:36px;
     color:white;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.35);
     cursor:pointer;
-    transition:0.3s;
+    transition:transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .add-btn:hover{
-    transform:scale(1.1);
+    transform:scale(1.12);
+    background:rgba(255,255,255,0.18);
+    box-shadow:
+        0 0 10px rgba(255,255,255,0.95),
+        0 0 22px rgba(255,255,255,0.85),
+        0 0 40px rgba(255,255,255,0.7),
+        0 0 65px rgba(255,255,255,0.5);
 }
 
 .popup{
@@ -319,7 +334,7 @@ form{
 
     <h1>Library</h1>
 
-    <form>
+    <form onsubmit="return false;">
         <div id="playlist"></div>
     </form>
 
@@ -339,12 +354,31 @@ let playlist = [];
 let currentIndex = -1;
 const audio = document.getElementById("audioPlayer");
 const API = "http://localhost:3000/api/songs";
+const SERVER = "http://localhost:3000";
 
 // Load songs from server
 async function loadSongs(){
     try {
         const res = await fetch(API);
-        playlist = await res.json();
+
+        if(!res.ok){
+            throw new Error("Could not load songs.");
+        }
+
+        const songs = await res.json();
+
+        // Keep track of the currently playing song after reloading
+        const currentSong = playlist[currentIndex];
+        playlist = songs;
+        currentIndex = currentSong
+            ? playlist.findIndex(song => song._id === currentSong._id)
+            : -1;
+
+        if(currentIndex === -1 && !audio.paused){
+            audio.pause();
+            audio.src = "";
+        }
+
         renderPlaylist();
     } catch(err) {
         console.error("Failed to load songs:", err);
@@ -363,6 +397,11 @@ async function uploadSong(){
         return;
     }
 
+    if(!songFile.name.toLowerCase().endsWith(".mp3")){
+        alert("Please select an MP3 file.");
+        return;
+    }
+
     const formData = new FormData();
     formData.append("song", songFile);
     formData.append("name", name);
@@ -370,15 +409,24 @@ async function uploadSong(){
     if(imgFile) formData.append("image", imgFile);
 
     try {
-        await fetch(API, { method: "POST", body: formData });
+        const res = await fetch(API, {
+            method: "POST",
+            body: formData
+        });
+
+        if(!res.ok){
+            throw new Error("Upload failed.");
+        }
+
         document.getElementById("popupBox").style.display = "none";
         document.getElementById("songName").value = "";
         document.getElementById("songArtist").value = "";
         document.getElementById("mp3Upload").value = "";
         document.getElementById("imgUpload").value = "";
-        loadSongs();
+
+        await loadSongs();
     } catch(err) {
-        alert("Failed to upload song.");
+        alert("Failed to upload song. Please try again.");
         console.error(err);
     }
 }
@@ -386,11 +434,20 @@ async function uploadSong(){
 // Delete song
 async function deleteSong(id, e){
     e.stopPropagation();
+
     try {
-        await fetch(`${API}/${id}`, { method: "DELETE" });
-        loadSongs();
+        const res = await fetch(`${API}/${id}`, {
+            method: "DELETE"
+        });
+
+        if(!res.ok){
+            throw new Error("Delete failed.");
+        }
+
+        await loadSongs();
     } catch(err) {
         console.error("Failed to delete song:", err);
+        alert("Failed to delete song.");
     }
 }
 
@@ -399,7 +456,10 @@ function renderPlaylist(){
     playlistDiv.innerHTML = "";
 
     if(playlist.length === 0){
-        playlistDiv.innerHTML = `<div class="empty-msg">No songs yet — press + to add one</div>`;
+        const message = document.createElement("div");
+        message.className = "empty-msg";
+        message.textContent = "No songs yet — press + to add one";
+        playlistDiv.appendChild(message);
         return;
     }
 
@@ -409,29 +469,49 @@ function renderPlaylist(){
         row.className = "song-row" + (index === currentIndex ? " playing" : "");
 
         const imgSrc = song.imagePath
-            ? `http://localhost:3000/${song.imagePath.replace(/\\/g, "/")}`
+            ? `${SERVER}/${song.imagePath.replace(/\\/g, "/")}`
             : null;
 
-            console.log("Image src:", imgSrc);
+        const audioSrc = `${SERVER}/${song.songPath.replace(/\\/g, "/")}`;
 
-        const audioSrc = `http://localhost:3000/${song.songPath.replace(/\\/g, "/")}`;
+        const playBtn = document.createElement("button");
+        playBtn.className = "play-btn";
+        playBtn.innerHTML = `<i class="fa-solid ${isPlaying ? "fa-pause" : "fa-play"}"></i>`;
+        playBtn.setAttribute("aria-label", isPlaying ? "Pause song" : "Play song");
+        playBtn.addEventListener("click", () => togglePlay(index, audioSrc));
 
-        row.innerHTML = `
-            <button class="play-btn" onclick="togglePlay(${index}, '${audioSrc}')">
-                <i class="fa-solid ${isPlaying ? "fa-pause" : "fa-play"}"></i>
-            </button>
-            ${imgSrc
-                ? `<img src="${imgSrc}" class="song-thumb">`
-                : `<div class="song-thumb"></div>`}
-            <div class="song-info">
-                <div class="song-title">${song.name}</div>
-                <div class="song-artist">${song.artist}</div>
-            </div>
-            <button class="delete-btn" onclick="deleteSong('${song._id}', event)">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        `;
+        let thumbnail;
 
+        if(imgSrc){
+            thumbnail = document.createElement("img");
+            thumbnail.src = imgSrc;
+            thumbnail.alt = "";
+        } else {
+            thumbnail = document.createElement("div");
+        }
+
+        thumbnail.className = "song-thumb";
+
+        const info = document.createElement("div");
+        info.className = "song-info";
+
+        const title = document.createElement("div");
+        title.className = "song-title";
+        title.textContent = song.name;
+
+        const artist = document.createElement("div");
+        artist.className = "song-artist";
+        artist.textContent = song.artist || "Unknown Artist";
+
+        info.append(title, artist);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        deleteBtn.setAttribute("aria-label", "Delete song");
+        deleteBtn.addEventListener("click", e => deleteSong(song._id, e));
+
+        row.append(playBtn, thumbnail, info, deleteBtn);
         playlistDiv.appendChild(row);
     });
 }
@@ -439,25 +519,34 @@ function renderPlaylist(){
 function togglePlay(index, src){
     if(currentIndex === index){
         if(audio.paused){
-            audio.play();
+            audio.play().catch(err => {
+                console.error("Failed to play song:", err);
+                alert("Could not play this song.");
+            });
         } else {
             audio.pause();
         }
     } else {
         currentIndex = index;
         audio.src = src;
-        audio.play();
+        audio.play().catch(err => {
+            console.error("Failed to play song:", err);
+            alert("Could not play this song.");
+            renderPlaylist();
+        });
     }
+
     renderPlaylist();
 }
 
 audio.addEventListener("play", renderPlaylist);
 audio.addEventListener("pause", renderPlaylist);
+
 audio.addEventListener("ended", () => {
-    if(currentIndex < playlist.length - 1){
+    if(currentIndex < playlist.length - 1 && currentIndex >= 0){
         const next = currentIndex + 1;
         const song = playlist[next];
-        const src = `http://localhost:3000/${song.songPath.replace(/\\/g, "/")}`;
+        const src = `${SERVER}/${song.songPath.replace(/\\/g, "/")}`;
         togglePlay(next, src);
     } else {
         currentIndex = -1;

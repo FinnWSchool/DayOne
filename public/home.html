@@ -121,6 +121,61 @@ form{
     color:#d5d5d5;
     transform:scale(1.1);
 }
+
+
+.workout-grid{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.workout-card{
+    position:relative;
+    width:100%;
+    height:140px;
+    border-radius:18px;
+    overflow:hidden;
+    text-decoration:none;
+
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+
+    transition:0.3s ease;
+}
+
+.workout-card:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 20px rgba(255,255,255,0.15);
+}
+
+.workout-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.card-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:flex-end;
+
+    padding:15px;
+
+    background:
+    linear-gradient(
+        transparent 40%,
+        rgba(0,0,0,0.85)
+    );
+}
+
+.card-overlay h3{
+    color:white;
+    font-size:24px;
+    font-weight:600;
+    letter-spacing:1px;
+}
 </style>
 
 <body>
@@ -128,7 +183,35 @@ form{
 <div class="phone-frame">
 
     <h1>Home</h1>
-    <form></form>
+    <form>
+<div class="workout-grid">
+
+    <a href="push.html" class="workout-card">
+        <img src="push day.jpg" alt="Push Workout">
+        <div class="card-overlay">
+            <h3>Push Workout</h3>
+        </div>
+    </a>
+
+    <a href="pull.html" class="workout-card">
+        <img src="pull day.jpg" alt="Pull Workout">
+        <div class="card-overlay">
+            <h3>Pull Workout</h3>
+        </div>
+    </a>
+
+    <a href="legs.html" class="workout-card">
+        <img src="leg day.jpg" alt="Leg Workout">
+        <div class="card-overlay">
+            <h3>Leg Workout</h3>
+        </div>
+    </a>
+
+</div>
+
+
+
+    </form>
     <nav class="bottom-nav">
         <a href="home.html" class="active">
             <i class="fa-solid fa-house"></i>
@@ -142,6 +225,7 @@ form{
             <i class="fa-solid fa-user"></i>
         </a>
     </nav>
+
 
 </div>
 

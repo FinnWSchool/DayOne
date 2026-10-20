@@ -1,1 +1,10 @@
-https://saintkentigern-my.sharepoint.com/:w:/p/f_h_worth_student/IQBeOK3WHGiXQrXy9s8GlqlCAeaNIXff7vuYGegoYOcFsjM?e=e5lAdN
+.env
+.env.*
+!.env.example
+node_modules/
+uploads/
+ngrok.exe
+*.docx
+*.pdf
+Gantt Chart.jpg
+finns document.txt
