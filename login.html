@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DayOne Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #111;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.phone-frame {
+    width: 390px;
+    height: 844px;
+    border-radius: 30px;
+    padding: 30px 25px;
+    background-image: linear-gradient(rgba(1,1,1,0.836), rgba(0,0,0,0.676)), url('bg.jpg');
+    background-position: center;
+    background-size: 170%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,.35);
+    border: 1px solid #ffffff;
+}
+
+h1 {
+    color: white;
+    font-size: 75px;
+    margin-top: 5px;
+    font-family: "Anton", sans-serif;
+    font-style: italic;
+}
+
+h2 {
+    color: white;
+    font-size: 20px;
+    padding-top: 50px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-style: italic;
+}
+
+form {
+    width: 100%;
+    max-width: 350px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    padding: 25px;
+    border-radius: 18px;
+    margin-top: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.imgcontainer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+label {
+    color: white;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Josefin Sans', sans-serif;
+    cursor: text;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 14px;
+    margin: 10px 0;
+    accent-color: #555555;
+    cursor: pointer;
+}
+
+.remember input[type="checkbox"] {
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    color: #14532d;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Josefin Sans', sans-serif;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #dcfce7;
+}
+
+.bottom {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.bottom:hover {
+    text-decoration: underline;
+    text-decoration-color: #ffffff;
+}
+
+.bottom a {
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone-frame">
+
+    <h1>DayOne</h1>
+
+    <form>
+
+        <div class="imgcontainer">
+            <img src="pull day1.jpg" class="avatar" alt="Avatar">
+        </div>
+
+        <label>Username:</label>
+        <input type="text" placeholder="Enter Username" name="Finn" required>
+
+        <label>Password:</label>
+        <input type="password" placeholder="Enter Password" name="Worth" required>
+
+        <div class="remember">
+            <input type="checkbox">
+            <span>Remember me</span>
+        </div>
+
+        <button class="button" type="submit" onclick="handleLogin(event)">Login</button>
+
+        <div class="bottom">
+            <a href="#">Forgot Password?</a>
+        </div>
+
+    </form>
+
+    <h2>Combining audio with progress</h2>
+
+</div>
+
+<script>
+function handleLogin(e) {
+    e.preventDefault();
+    const username = document.querySelector('input[name="Finn"]').value;
+    const password = document.querySelector('input[name="Worth"]').value;
+
+    if (username === "Finn" && password === "Worth") {
+        window.location.href = "home.html";
+    } else {
+        alert("Incorrect username or password.");
+    }
+}
+</script>
+
+</body>
+</html>
