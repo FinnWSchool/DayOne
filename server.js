@@ -23,12 +23,12 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.log("MongoDB connection failed:", err.message));
 
 
-// This is my second Complex Technique 2: DATABASE AND STRUCTURED DATA
+// This is my second Complex Technique 2: Database and structured data
 // It works as Mongoose defines a schema for each song and uses MongoDB
 // to store and retrieve the song's records persistently.
 // This works for my DayOne because song names, artists,
 // file paths and creation dates are available
-// after the application is restarted.
+// after the application is restartede.
 
 const songSchema = new mongoose.Schema({
     name: String,
@@ -42,7 +42,7 @@ const songSchema = new mongoose.Schema({
 const Song = mongoose.model("Song", songSchema);
 
 
-// This is my first Complex Technique 1: FILE HANDLING
+// This is my first Complex Technique 1: file handling
 // This is where Multer processes the people who use my app's uploaded audio files and cover images.
 // Their files are stored in separate folders based on their file type like (mp3,jpeg/png)
 // and unique filenames are generated using the current time of day.
@@ -143,7 +143,7 @@ app.post("/api/songs", (req, res, next) => {
     }
 });
 
-// Gets all the songs
+// This grabs all the songs
 app.get("/api/songs", async (req, res) => {
     try {
         // This gets the saved songs and puts the newest ones first in the library.
